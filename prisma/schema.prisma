@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Package {
+  id          Int    @id @default(autoincrement())
+  name        String
+  slug        String
+  description String @db.Text
+
+  questions Question[]
+  attempts  Attempt[]
+}
+
+model Question {
+  id        Int    @id @default(autoincrement())
+  packageId Int
+  question  String @db.Text
+
+  package     Package      @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  answers     Answer[]
+  userAnswers UserAnswer[]
+}
+
+model Answer {
+  id         Int     @id @default(autoincrement())
+  questionId Int
+  answer     String  @db.Text
+  isCorrect  Boolean @default(false)
+
+  question    Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userAnswers UserAnswer[]
+}
+
+model Attempt {
+  id        Int       @id @default(autoincrement())
+  packageId Int
+  name      String
+  startTime DateTime?
+  endTime   DateTime?
+  score     Int       @default(0)
+  status    Boolean   @default(false)
+
+  package     Package      @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  userAnswers UserAnswer[]
+}
+
+model UserAnswer {
+  id         Int @id @default(autoincrement())
+  attemptId  Int
+  questionId Int
+  answerId   Int
+
+  attempt  Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answer   Answer   @relation(fields: [answerId], references: [id], onDelete: Cascade)
+}

@@ -157,7 +157,7 @@ export default function Content({ attempt }: { attempt: Attempt }) {
                 />
                 <Label
                   htmlFor={q.id.toString()}
-                  className="py-0.5 text-[13px] md:text-sm"
+                  className="py-0.5 text-[13.5px] md:text-sm"
                 >
                   <span className="leading-relaxed select-none">
                     {q.answer}

@@ -34,7 +34,7 @@ export default async function Home() {
         {packages.map((pkg, index) => (
           <Card key={index}>
             <CardHeader>
-              <CardTitle> {pkg.name} </CardTitle>
+              <CardTitle className="leading-tight"> {pkg.name} </CardTitle>
               <CardDescription>
                 {pkg.questions.length === 0 ? (
                   <span>Belum ada soal.</span>

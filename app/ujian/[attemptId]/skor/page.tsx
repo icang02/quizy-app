@@ -19,7 +19,7 @@ export default async function page({ params }: { params: Params }) {
   const { data: attempt }: { data: Attempt } = await res.json();
 
   return (
-    <div className="px-5 md:px-0 max-w-lg mx-auto mt-10 md:mt-12 gap-8">
+    <div className="px-5 md:px-0 max-w-lg mx-auto pt-10 md:pt-12 gap-8">
       <Card>
         <CardHeader>
           <CardTitle> {attempt.package.name} </CardTitle>

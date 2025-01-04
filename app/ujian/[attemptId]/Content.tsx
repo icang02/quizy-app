@@ -47,7 +47,9 @@ export default function Content({ attempt }: { attempt: Attempt }) {
       updateNumberQuestion(1);
       updateUserAnswers([]);
       updateSelectedAnswerId("");
-      updateFinishedTimeExam(false);
+      setTimeout(() => {
+        updateFinishedTimeExam(false);
+      }, 700);
     };
   }, []);
 
@@ -117,6 +119,8 @@ export default function Content({ attempt }: { attempt: Attempt }) {
   };
 
   const submitExam = () => {
+    updateFinishedTimeExam(true);
+
     const userAnswers = getLocalUserAnswers(attempt.id);
     startTransition(async () => {
       await fetch(process.env.NEXT_PUBLIC_API + "/attempt/update", {
@@ -159,7 +163,7 @@ export default function Content({ attempt }: { attempt: Attempt }) {
                   htmlFor={q.id.toString()}
                   className="py-0.5 text-[13.5px] md:text-sm"
                 >
-                  <span className="leading-relaxed select-none">
+                  <span className="leading normal md:leading-relaxed select-none">
                     {q.answer}
                   </span>
                 </Label>

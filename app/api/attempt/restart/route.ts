@@ -12,7 +12,8 @@ export async function POST(req: NextRequest) {
     "yyyy-MM-dd HH:mm:ssXXX"
   );
   const endDate = new Date(now);
-  endDate.setMinutes(now.getMinutes() + 5);
+  // endDate.setMinutes(now.getMinutes() + 1);
+  endDate.setSeconds(now.getSeconds() + 63);
 
   const endTime = formatInTimeZone(
     endDate,

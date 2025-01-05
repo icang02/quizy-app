@@ -128,9 +128,13 @@ export default async function page({ params }: { params: Params }) {
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="inline-flex gap-1">
-                      <Badge variant={"warning"}>
-                        <FilePenLine size={15} />
-                      </Badge>
+                      <Link
+                        href={`/dashboard/paket-soal/${packageId}/${item.id}`}
+                      >
+                        <Badge variant={"warning"}>
+                          <FilePenLine size={15} />
+                        </Badge>
+                      </Link>
                       <ButtonDeleteQuestion questionId={item.id} />
                     </div>
                     <span className="font-semibold text-xs text-gray-500">
@@ -166,9 +170,13 @@ export default async function page({ params }: { params: Params }) {
                       />
                     </TableCell>
                     <TableCell className="text-right flex flex-col md:flex-row gap-1">
-                      <Badge variant={"warning"}>
-                        <FilePenLine size={15} />
-                      </Badge>
+                      <Link
+                        href={`/dashboard/paket-soal/${packageId}/${item.id}`}
+                      >
+                        <Badge variant={"warning"}>
+                          <FilePenLine size={15} />
+                        </Badge>
+                      </Link>
                       <ButtonDeleteQuestion questionId={item.id} />
                     </TableCell>
                   </TableRow>

@@ -41,3 +41,10 @@ export const toTitleCase = (text: string) => {
 export const ucFirst = (text: string) => {
   return text.charAt(0).toUpperCase() + text.slice(1);
 };
+
+export function truncateSentences(text: string, limit: number) {
+  if (text.length <= limit) {
+    return text;
+  }
+  return text.slice(0, limit) + "...";
+}

@@ -32,7 +32,7 @@ export default async function page() {
 
   return (
     <>
-      <div className="flex items-center justify-between">
+      <div className="flex items-start md:items-center gap-6 md:gp-0 justify-between flex-col md:flex-row">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -50,7 +50,7 @@ export default async function page() {
         <div className="flex h-5 items-center space-x-4 text-sm">
           <Link href={"/dashboard/paket-soal"}>
             <Button size="sm" variant="outline">
-              <RefreshCw /> Refresh
+              <RefreshCw /> <span className="hidden md:inline">Refresh</span>
             </Button>
           </Link>
           <Separator orientation="vertical" />
@@ -65,7 +65,7 @@ export default async function page() {
               <CardHeader>
                 <CardTitle className="grid grid-cols-12">
                   <div className="col-span-11">
-                    <h5 className="uppercase text-sm">{pkg.name}</h5>
+                    <h5 className="uppercase text-sm w-[90%]">{pkg.name}</h5>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500 font-normal">
                         {pkg.description}

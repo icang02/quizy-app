@@ -1,8 +1,9 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-import { Plus } from "lucide-react";
+import { PenLine } from "lucide-react";
 
 import {
   Dialog,
@@ -13,26 +14,30 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-export default function FormAddPackage() {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+type Form = {
+  id: number;
+  name: string;
+  description: string;
+};
 
+export default function FormEditPackage({ id, name, description }: Form) {
+  const router = useRouter();
+
+  const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState({
-    name: "",
-    description: "",
+    name: name,
+    description: description,
   });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    e.preventDefault();
     const { id, value } = e.target;
     setForm((prev) => ({
       ...prev,
@@ -45,18 +50,16 @@ export default function FormAddPackage() {
 
     startTransition(async () => {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_API + "/admin/package/store",
+        process.env.NEXT_PUBLIC_API + `/admin/package/${id}/update`,
         {
-          method: "POST",
+          method: "PATCH",
           body: JSON.stringify(form),
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-
       const { message } = await response.json();
-      console.log(message);
 
       toast(message, {
         description: Date(),
@@ -66,27 +69,27 @@ export default function FormAddPackage() {
         },
       });
 
-      setForm({
-        name: "",
-        description: "",
-      });
-
-      setIsOpen(false);
       router.refresh();
+      setIsOpen(false);
     });
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)} type="button" size={"sm"}>
-          <Plus /> <div className="hidden md:inline">Tambah</div>
+        <Button
+          variant={"warning"}
+          onClick={() => setIsOpen(true)}
+          type="button"
+          size={"sm"}
+        >
+          <PenLine /> <span className="hidden md:inline">Edit Paket</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[700px]">
         <form onSubmit={onSubmit}>
           <DialogHeader>
-            <DialogTitle>Tambah Paket Soal</DialogTitle>
+            <DialogTitle>Edit Paket Soal</DialogTitle>
             <DialogDescription>Isi data lalu klik simpan.</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -119,7 +122,7 @@ export default function FormAddPackage() {
           </div>
           <DialogFooter>
             <Button disabled={isPending} type="submit">
-              Simpan
+              Update
             </Button>
           </DialogFooter>
         </form>

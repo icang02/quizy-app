@@ -9,7 +9,14 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
   const data = await db.question.findFirst({
     where: { id: Number(questionId) },
     include: {
-      answers: true,
+      answers: {
+        orderBy: {
+          id: "asc",
+        },
+      },
+    },
+    orderBy: {
+      id: "asc",
     },
   });
 

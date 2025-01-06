@@ -26,6 +26,15 @@ export async function POST(req: NextRequest) {
     });
   }
 
+  if (question.deleteQuestion.length != 0)
+    await db.answer.deleteMany({
+      where: {
+        id: {
+          in: question.deleteQuestion,
+        },
+      },
+    });
+
   return NextResponse.json({
     status: 200,
     message: "Sukses! Data berhasil diupdate.",

@@ -78,6 +78,16 @@ export default function FormAddQuestion({ packageId }: { packageId: number }) {
           onClick: () => "",
         },
       });
+
+      setForm({
+        packageId: packageId,
+        question: "",
+        answers: Array.from({ length: form.answers.length }, (_, index) => ({
+          id: index,
+          answer: "",
+          isCorrect: false,
+        })),
+      });
     });
   };
 
@@ -128,7 +138,7 @@ export default function FormAddQuestion({ packageId }: { packageId: number }) {
               />
               <Label
                 htmlFor={a.id.toString()}
-                className="py-0.5 text-[13.5px] md:text-sm w-[85%] md:w-[95%]"
+                className="py-0.5 text-[13.5px] md:text-sm w-[83%] md:w-[95%]"
               >
                 <Input
                   className="text-sm"

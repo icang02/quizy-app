@@ -78,9 +78,11 @@ export default async function page({ params }: { params: Params }) {
           </BreadcrumbList>
         </Breadcrumb>
         <div className="flex h-5 items-center space-x-4 text-sm">
-          <Button size={"sm"}>
-            <Plus /> <span className="hidden md:inline">Tambah Soal</span>
-          </Button>
+          <Link href={`/dashboard/paket-soal/${packageId}/create`}>
+            <Button size={"sm"}>
+              <Plus /> <span className="hidden md:inline">Tambah Soal</span>
+            </Button>
+          </Link>
           <Separator orientation="vertical" />
           <div className="flex space-x-1">
             <FormEditPackage
@@ -123,21 +125,21 @@ export default async function page({ params }: { params: Params }) {
             {pkg.questions.map((item, index) => (
               <div key={index} className="block md:hidden">
                 <div>
-                  <p className="text-sm mb-3.5 leading-snug">
+                  <p className="text-gray-600 text-sm mb-3.5 leading-snug">
                     {truncateSentences(item.question, 100)}
                   </p>
                   <div className="flex items-center justify-between">
-                    <div className="inline-flex gap-1">
+                    <div className="inline-flex items-center justify-center gap-1">
                       <Link
                         href={`/dashboard/paket-soal/${packageId}/${item.id}`}
                       >
-                        <Badge variant={"warning"}>
+                        <Badge className="mt-0.5" variant={"warning"}>
                           <FilePenLine size={15} />
                         </Badge>
                       </Link>
                       <ButtonDeleteQuestion questionId={item.id} />
                     </div>
-                    <span className="font-semibold text-xs text-gray-500">
+                    <span className="font-semibold text-xs text-gray-400">
                       #{index + 1}
                     </span>
                   </div>

@@ -52,7 +52,7 @@ export default function DashboardLayout({
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-          <div className="gap-2 px-7">
+          <div className="gap-2 mx-7">
             <DropdownMenu>
               <DropdownMenuTrigger asChild={true}>
                 <Avatar className="cursor-pointer size-9 border-2 border-gray-700">
@@ -71,7 +71,7 @@ export default function DashboardLayout({
             </DropdownMenu>
           </div>
         </header>
-        <div className="p-6">{children}</div>
+        <div className="p-3.5 md:p-6">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

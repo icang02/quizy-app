@@ -10,6 +10,9 @@ export async function GET(req: NextRequest, { params }: { params: Params }) {
     include: {
       questions: {
         include: { answers: true },
+        orderBy: {
+          id: "asc",
+        },
       },
     },
   });

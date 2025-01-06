@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState, useTransition } from "react";
 
-import { CirclePlus } from "lucide-react";
+import { CircleMinus, CirclePlus } from "lucide-react";
 
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,12 +11,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
-export default function FormEditQuestion({ packageId, question }: any) {
+export default function FormAddQuestion({ packageId }: { packageId: number }) {
   const [isPending, startTransition] = useTransition();
   const [form, setForm] = useState({
-    id: question.id,
-    question: question.question,
-    answers: question.answers,
+    packageId: packageId,
+    question: "",
+    answers: Array.from({ length: 4 }, (_, index) => ({
+      id: index,
+      answer: "",
+      isCorrect: false,
+    })),
   });
 
   const handleChange = (
@@ -50,14 +54,17 @@ export default function FormEditQuestion({ packageId, question }: any) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(form);
+    const updatedForm = {
+      ...form,
+      answers: form.answers.map(({ id, ...rest }) => rest),
+    };
 
     startTransition(async () => {
       const res = await fetch(
-        process.env.NEXT_PUBLIC_API + `/admin/question/update`,
+        process.env.NEXT_PUBLIC_API + `/admin/question/store`,
         {
           method: "POST",
-          body: JSON.stringify(form),
+          body: JSON.stringify(updatedForm),
           headers: {
             "Content-Type": "application/json",
           },
@@ -80,12 +87,18 @@ export default function FormEditQuestion({ packageId, question }: any) {
       answers: [
         ...prev.answers,
         {
-          id: 0,
-          questionId: prev.id,
+          id: prev.answers[prev.answers.length - 1].id + 1,
           answer: "",
           isCorrect: false,
         },
       ],
+    }));
+  };
+
+  const deleteOption = (id: number) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      answers: prevForm.answers.filter((a) => a.id !== id),
     }));
   };
 
@@ -105,30 +118,46 @@ export default function FormEditQuestion({ packageId, question }: any) {
       <div className="mb-7 flex flex-col gap-3">
         <Label>Jawaban</Label>
         <RadioGroup>
-          {form.answers.map((q: any, index: any) => (
-            <div className="flex items-center space-x-2" key={index}>
+          {form.answers.map((a) => (
+            <div className="flex items-center space-x-2" key={a.id.toString()}>
               <RadioGroupItem
-                onClick={() => handleAnswerChange(q.id)}
-                id={q.id.toString()}
-                value={q.id.toString()}
-                checked={q.isCorrect}
+                onClick={() => handleAnswerChange(a.id)}
+                id={a.id.toString()}
+                value={a.id.toString()}
+                checked={a.isCorrect}
               />
               <Label
-                htmlFor={q.id.toString()}
+                htmlFor={a.id.toString()}
                 className="py-0.5 text-[13.5px] md:text-sm w-[85%] md:w-[95%]"
               >
                 <Input
                   className="text-sm"
-                  value={q.answer}
-                  onChange={(e) => handleAnswerTextChange(q.id, e.target.value)}
+                  value={a.answer}
+                  onChange={(e) => handleAnswerTextChange(a.id, e.target.value)}
                 />
               </Label>
-              {form.answers.length - 1 == index && (
-                <CirclePlus
-                  size={22}
-                  onClick={addOption}
-                  className="text-slate-500 cursor-pointer"
-                />
+              {form.answers[form.answers.length - 1].id == a.id ? (
+                form.answers.length >= 5 ? (
+                  <CircleMinus
+                    size={20}
+                    onClick={() => deleteOption(a.id)}
+                    className="text-slate-400 cursor-pointer hover:text-slate-500"
+                  />
+                ) : (
+                  <CirclePlus
+                    size={20}
+                    onClick={addOption}
+                    className="text-slate-400 cursor-pointer hover:text-slate-500"
+                  />
+                )
+              ) : (
+                form.answers.length > 4 && (
+                  <CircleMinus
+                    size={20}
+                    onClick={() => deleteOption(a.id)}
+                    className="text-slate-400 cursor-pointer hover:text-slate-500"
+                  />
+                )
               )}
             </div>
           ))}
@@ -146,7 +175,7 @@ export default function FormEditQuestion({ packageId, question }: any) {
           size={"sm"}
           variant={"warning"}
         >
-          Update
+          Simpan
         </Button>
       </div>
     </form>

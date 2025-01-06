@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/lib/db";
+import { ucFirst } from "@/lib/constant";
 
 export async function POST(req: NextRequest) {
   const question: any = await req.json();
@@ -7,7 +8,7 @@ export async function POST(req: NextRequest) {
   await db.question.update({
     where: { id: question.id },
     data: {
-      question: question.question,
+      question: ucFirst(question.question),
     },
   });
 

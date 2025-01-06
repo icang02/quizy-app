@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface Answer {
   id: number;
@@ -25,6 +26,7 @@ interface Form {
 }
 
 export default function FormEditQuestion({ packageId, question }: any) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [form, setForm] = useState<Form>({
     id: question.id,
@@ -86,6 +88,7 @@ export default function FormEditQuestion({ packageId, question }: any) {
           onClick: () => "",
         },
       });
+      router.refresh();
     });
   };
 

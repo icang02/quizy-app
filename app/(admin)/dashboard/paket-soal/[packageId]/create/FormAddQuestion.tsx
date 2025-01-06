@@ -10,8 +10,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function FormAddQuestion({ packageId }: { packageId: number }) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [form, setForm] = useState({
     packageId: packageId,
@@ -88,6 +90,7 @@ export default function FormAddQuestion({ packageId }: { packageId: number }) {
           isCorrect: false,
         })),
       });
+      router.refresh();
     });
   };
 

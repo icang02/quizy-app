@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { getLocalUserAnswers, getSelectedAnswerid } from "@/lib/constant";
+import { Attempt } from "@/types";
 
 import {
   useCurrentQuestionStore,
@@ -9,7 +10,14 @@ import {
   useUserAnswersStore,
 } from "@/hooks/store";
 import { Button } from "@/components/ui/button";
-import { Attempt } from "@/types";
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default function Sidebar({ attempt }: { attempt: Attempt }) {
   const { updateNumberQuestion } = useNumberQuestionStore();
@@ -41,10 +49,52 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
     updateUserAnswers(dataAnswers);
   }, []);
 
+  const originalArray = attempt.package.questions; // Array [1, 2, ..., 36]
+  const chunkSize = 12;
+  const result = [];
+
+  // Membagi array menjadi beberapa kelompok
+  for (let i = 0; i < originalArray.length; i += chunkSize) {
+    result.push(originalArray.slice(i, i + chunkSize));
+  }
+
   return (
     <div className="w-fuil md:w-1/4 bg-gray-50 p-3 md:p-4 border-b md:border-r">
       <h2 className="text-lg font-bold mb-4">Navigasi Soal</h2>
-      <div className="grid grid-cols-6 md:grid-cols-5 gap-1">
+      <Carousel className="block md:hidden">
+        <CarouselContent>
+          {result.map((item, index) => (
+            <CarouselItem key={index}>
+              <div className="grid grid-cols-6 md:grid-cols-5 gap-1">
+                {item.map((q, index) => (
+                  <Button
+                    onClick={() => changeQuestion(index)}
+                    key={q.id}
+                    size={"sm"}
+                    variant={
+                      userAnswers.map((q) => q.questionId).includes(q.id)
+                        ? "success"
+                        : "destructive"
+                    }
+                    className={`${
+                      index === numberQuestion - 1 &&
+                      (userAnswers.some((ans) => ans.questionId === q.id)
+                        ? "bg-green-600/90"
+                        : "bg-destructive/90")
+                    } text-[10px] md:text-xs font-semibold select-none`}
+                  >
+                    {index + 1}
+                  </Button>
+                ))}
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        {/* <CarouselPrevious /> */}
+        {/* <CarouselNext /> */}
+      </Carousel>
+
+      <div className="hidden md:grid grid-cols-6 md:grid-cols-5 gap-1">
         {attempt.package.questions.map((q, index) => (
           <Button
             onClick={() => changeQuestion(index)}

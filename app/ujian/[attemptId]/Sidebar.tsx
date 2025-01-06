@@ -63,12 +63,14 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
       <h2 className="text-lg font-bold mb-4">Navigasi Soal</h2>
       <Carousel className="block md:hidden">
         <CarouselContent>
-          {result.map((item, index) => (
-            <CarouselItem key={index}>
+          {result.map((item, indexResult) => (
+            <CarouselItem key={indexResult}>
               <div className="grid grid-cols-6 md:grid-cols-5 gap-1">
                 {item.map((q, index) => (
                   <Button
-                    onClick={() => changeQuestion(index)}
+                    onClick={() =>
+                      changeQuestion(indexResult * chunkSize + index)
+                    }
                     key={q.id}
                     size={"sm"}
                     variant={
@@ -83,7 +85,7 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
                         : "bg-destructive/90")
                     } text-[10px] md:text-xs font-semibold select-none`}
                   >
-                    {index + 1}
+                    {indexResult * chunkSize + index + 1}
                   </Button>
                 ))}
               </div>

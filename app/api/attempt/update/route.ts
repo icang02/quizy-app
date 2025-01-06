@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
       },
     },
   });
-  const totalScore = correctAnswers * 10;
+  const totalScore = correctAnswers * 5;
 
   await db.attempt.update({
     where: { id: attemptId },

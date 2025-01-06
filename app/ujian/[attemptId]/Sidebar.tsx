@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getLocalUserAnswers, getSelectedAnswerid } from "@/lib/constant";
 import { Attempt } from "@/types";
 
@@ -16,7 +16,7 @@ import {
   CarouselContent,
   CarouselItem,
   CarouselNext,
-  CarouselPrevious,
+  // CarouselPrevious,
 } from "@/components/ui/carousel";
 
 export default function Sidebar({ attempt }: { attempt: Attempt }) {
@@ -58,6 +58,16 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
     result.push(originalArray.slice(i, i + chunkSize));
   }
 
+  // Handle autoplay carousel
+  const nextButtonRef = useRef<HTMLButtonElement | null>(null);
+  useEffect(() => {
+    if (numberQuestion != 12 && numberQuestion != 24) {
+      if ([13, 25].includes(numberQuestion) && nextButtonRef.current) {
+        nextButtonRef.current.click();
+      }
+    }
+  }, [numberQuestion]);
+
   return (
     <div className="w-fuil md:w-1/4 bg-gray-50 p-3 md:p-4 border-b md:border-r">
       <h2 className="text-lg font-bold mb-4">Navigasi Soal</h2>
@@ -93,7 +103,7 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
           ))}
         </CarouselContent>
         {/* <CarouselPrevious /> */}
-        {/* <CarouselNext /> */}
+        <CarouselNext ref={nextButtonRef} className="hidden" />
       </Carousel>
 
       <div className="hidden md:grid grid-cols-6 md:grid-cols-5 gap-1">

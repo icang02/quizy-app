@@ -16,6 +16,7 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import Image from "next/image";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
@@ -59,9 +60,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <GalleryVerticalEnd className="size-4" />
-                </div>
+                <Image
+                  src={"/logo.jpeg"}
+                  width={30}
+                  height={30}
+                  alt="logo"
+                  className="rounded"
+                  unoptimized
+                />
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">Quizy</span>
                   <span className="">Administrator</span>

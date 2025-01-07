@@ -140,16 +140,15 @@ export default function Content({ attempt }: { attempt: Attempt }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-normal text-sm md:text-base select-none">
+        <CardTitle className="font-normal text-sm md:text-base select-none prose-sm">
           <div
+            className="prose-sm"
             dangerouslySetInnerHTML={{
               __html:
                 currentQuestion.question ||
                 attempt.package.questions[numberQuestion - 1].question,
             }}
           ></div>
-          {/* {currentQuestion.question ||
-            attempt.package.questions[numberQuestion - 1].question} */}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -166,13 +165,8 @@ export default function Content({ attempt }: { attempt: Attempt }) {
                   value={q.id.toString()}
                   checked={q.id.toString() == selectedAnswerId}
                 />
-                <Label
-                  htmlFor={q.id.toString()}
-                  className="py-0.5 text-[13.5px] md:text-sm"
-                >
-                  <span className="leading normal md:leading-relaxed select-none">
-                    {q.answer}
-                  </span>
+                <Label htmlFor={q.id.toString()}>
+                  <span className="prose-sm select-none">{q.answer}</span>
                 </Label>
               </div>
             ))}

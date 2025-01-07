@@ -49,9 +49,12 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
   }, []);
 
   const originalArray = attempt.package.questions; // Array [1, 2, ..., 36]
-  const chunkSize = 12;
-  const chunkSizeKPK = Array.from({ length: 9 }, (_, i) => (i + 1) * 12);
-  const chunkSizeKPKPlus = Array.from({ length: 9 }, (_, i) => 13 + i * 12);
+  const chunkSize = 21;
+  const chunkSizeKPK = Array.from({ length: 9 }, (_, i) => (i + 1) * chunkSize);
+  const chunkSizeKPKPlus = Array.from(
+    { length: 9 },
+    (_, i) => chunkSize + 1 + i * chunkSize
+  );
   const result = [];
 
   // Membagi array menjadi beberapa kelompok
@@ -70,20 +73,20 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
   }, [numberQuestion]);
 
   return (
-    <div className="w-fuil md:w-1/4 bg-gray-50 p-3 md:p-4 border-b md:border-r">
+    <div className="w-fuil md:w-1/5 bg-gray-50 p-3 md:p-4 border-b md:border-r">
       <h2 className="text-lg font-bold mb-4">Navigasi Soal</h2>
       <Carousel className="block md:hidden">
         <CarouselContent>
           {result.map((item, indexResult) => (
             <CarouselItem key={indexResult}>
-              <div className="grid grid-cols-6 md:grid-cols-5 gap-1">
+              <div className="grid grid-cols-7 gap-[2px]">
                 {item.map((q, index) => (
                   <Button
                     onClick={() =>
                       changeQuestion(indexResult * chunkSize + index)
                     }
                     key={q.id}
-                    size={"sm"}
+                    size={"xs"}
                     variant={
                       userAnswers.map((q) => q.questionId).includes(q.id)
                         ? "success"
@@ -94,7 +97,7 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
                       (userAnswers.some((ans) => ans.questionId === q.id)
                         ? "bg-green-600/90"
                         : "bg-destructive/90")
-                    } text-[10px] md:text-xs font-semibold select-none`}
+                    } rounded-[3px] text-[10px] md:text-xs font-semibold select-none`}
                   >
                     {indexResult * chunkSize + index + 1}
                   </Button>
@@ -103,16 +106,15 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        {/* <CarouselPrevious /> */}
         <CarouselNext ref={nextButtonRef} className="hidden" />
       </Carousel>
 
-      <div className="hidden md:grid grid-cols-6 md:grid-cols-5 gap-1">
+      <div className="hidden md:grid grid-cols-6 md:grid-cols-5 gap-[2px]">
         {attempt.package.questions.map((q, index) => (
           <Button
             onClick={() => changeQuestion(index)}
             key={q.id}
-            size={"sm"}
+            size={"xs"}
             variant={
               userAnswers.map((q) => q.questionId).includes(q.id)
                 ? "success"
@@ -123,7 +125,7 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
               (userAnswers.some((ans) => ans.questionId === q.id)
                 ? "bg-green-600/90"
                 : "bg-destructive/90")
-            } text-[10px] md:text-xs font-semibold select-none`}
+            } rounded-[3px] text-[10px] md:text-xs font-semibold select-none`}
           >
             {index + 1}
           </Button>

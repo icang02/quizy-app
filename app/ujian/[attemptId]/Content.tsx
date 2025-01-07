@@ -17,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Save, SkipForward } from "lucide-react";
 
 export default function Content({ attempt }: { attempt: Attempt }) {
   const router = useRouter();
@@ -173,15 +174,7 @@ export default function Content({ attempt }: { attempt: Attempt }) {
           </RadioGroup>
 
           <div className="mt-6 flex flex-col md:flex-row items-center justify-between select-none">
-            <div>
-              <Button
-                disabled={!selectedAnswerId || isPending || finishedTimeExam}
-                type="submit"
-                size={"sm"}
-                className="bg-blue-600 hover:bg-blue-600/90 text-white text-[10px] md:text-xs uppercase tracking-wider"
-              >
-                Simpan dan Lanjutkan
-              </Button>
+            <div className="w-full flex items-center justify-between">
               <Button
                 onClick={handleNextQuestion}
                 disabled={
@@ -193,12 +186,34 @@ export default function Content({ attempt }: { attempt: Attempt }) {
                 size={"sm"}
                 className="ms-1.5 bg-yellow-600 hover:bg-yellow-600/90 text-white text-[10px] md:text-xs uppercase tracking-wider"
               >
-                Lewatkan
+                <SkipForward /> Lewatkan
+              </Button>
+              {userAnswers.length === attempt.package.questions.length && (
+                <div className="hidden md:block">
+                  <Button
+                    disabled={isPending || finishedTimeExam}
+                    onClick={submitExam}
+                    type="button"
+                    size={"sm"}
+                    variant="destructive"
+                    className="mt-1.5 md:mt-0 text-[10px] md:text-xs uppercase tracking-wider"
+                  >
+                    Akhiri Ujian
+                  </Button>
+                </div>
+              )}
+              <Button
+                disabled={!selectedAnswerId || isPending || finishedTimeExam}
+                type="submit"
+                size={"sm"}
+                className="bg-blue-600 hover:bg-blue-600/90 text-white text-[10px] md:text-xs uppercase tracking-wider"
+              >
+                <Save /> Simpan dan Lanjutkan
               </Button>
             </div>
 
             {userAnswers.length === attempt.package.questions.length && (
-              <div>
+              <div className="block md:hidden">
                 <Button
                   disabled={isPending || finishedTimeExam}
                   onClick={submitExam}

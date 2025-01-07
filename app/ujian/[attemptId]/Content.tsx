@@ -141,8 +141,15 @@ export default function Content({ attempt }: { attempt: Attempt }) {
     <Card>
       <CardHeader>
         <CardTitle className="font-normal text-sm md:text-base select-none">
-          {currentQuestion.question ||
-            attempt.package.questions[numberQuestion - 1].question}
+          <div
+            dangerouslySetInnerHTML={{
+              __html:
+                currentQuestion.question ||
+                attempt.package.questions[numberQuestion - 1].question,
+            }}
+          ></div>
+          {/* {currentQuestion.question ||
+            attempt.package.questions[numberQuestion - 1].question} */}
         </CardTitle>
       </CardHeader>
       <CardContent>

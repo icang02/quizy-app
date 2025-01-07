@@ -11,6 +11,14 @@ export default async function page({ params }: { params: Params }) {
   );
   const { data: attempt } = await data.json();
 
+  // Mengacak questions
+  const shuffleQuestions = (questions: any) => {
+    return [...questions].sort(() => Math.random() - 0.5);
+  };
+
+  // Terapkan pengacakan
+  attempt.package.questions = shuffleQuestions(attempt.package.questions);
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       <Sidebar attempt={attempt} />

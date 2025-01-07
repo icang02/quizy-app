@@ -16,7 +16,6 @@ import {
   CarouselContent,
   CarouselItem,
   CarouselNext,
-  // CarouselPrevious,
 } from "@/components/ui/carousel";
 
 export default function Sidebar({ attempt }: { attempt: Attempt }) {
@@ -51,6 +50,8 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
 
   const originalArray = attempt.package.questions; // Array [1, 2, ..., 36]
   const chunkSize = 12;
+  const chunkSizeKPK = Array.from({ length: 9 }, (_, i) => (i + 1) * 12);
+  const chunkSizeKPKPlus = Array.from({ length: 9 }, (_, i) => 13 + i * 12);
   const result = [];
 
   // Membagi array menjadi beberapa kelompok
@@ -61,8 +62,8 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
   // Handle autoplay carousel
   const nextButtonRef = useRef<HTMLButtonElement | null>(null);
   useEffect(() => {
-    if (numberQuestion != 12 && numberQuestion != 24) {
-      if ([13, 25].includes(numberQuestion) && nextButtonRef.current) {
+    if (!chunkSizeKPK.includes(numberQuestion)) {
+      if (chunkSizeKPKPlus.includes(numberQuestion) && nextButtonRef.current) {
         nextButtonRef.current.click();
       }
     }
@@ -89,7 +90,7 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
                         : "destructive"
                     }
                     className={`${
-                      index === numberQuestion - 1 &&
+                      indexResult * chunkSize + index === numberQuestion - 1 &&
                       (userAnswers.some((ans) => ans.questionId === q.id)
                         ? "bg-green-600/90"
                         : "bg-destructive/90")

@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import { compareSync } from "bcrypt-ts";
-
+import Google from "next-auth/providers/google";
 import { LoginSchema } from "./lib/zod";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -15,6 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/login",
   },
   providers: [
+    Google,
     Credentials({
       credentials: {
         email: {},

@@ -18,7 +18,11 @@ import {
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+  name?: string | null;
+};
+
+export function AppSidebar({ name, ...props }: AppSidebarProps) {
   const pathname = usePathname();
 
   // This is sample data.
@@ -70,7 +74,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 />
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold">Quizy</span>
-                  <span className="">Administrator</span>
+                  <span>{name}</span>
                 </div>
               </Link>
             </SidebarMenuButton>

@@ -25,16 +25,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ButtonLogout from "./dashboard/ButtonLogout";
+import { auth } from "@/auth";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+
   return (
     <SidebarProvider>
       <Toaster />
-      <AppSidebar />
+      <AppSidebar name={session?.user?.name} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b">
           <div className="flex items-center gap-2 px-3">
@@ -56,7 +59,11 @@ export default function DashboardLayout({
             <DropdownMenu>
               <DropdownMenuTrigger asChild={true}>
                 <Avatar className="cursor-pointer size-9 border-2 border-gray-700">
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage
+                    src={
+                      session?.user?.image || "https://github.com/shadcn.png"
+                    }
+                  />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import db from "@/lib/db";
+import { prisma } from "@/lib/prisma";
 
 export async function GET() {
-  const data = await db.package.findMany({
+  const data = await prisma.package.findMany({
     include: {
       questions: {
         orderBy: { id: "asc" },

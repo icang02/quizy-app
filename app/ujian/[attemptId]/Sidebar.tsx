@@ -79,7 +79,7 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
         <CarouselContent>
           {result.map((item, indexResult) => (
             <CarouselItem key={indexResult}>
-              <div className="grid grid-cols-7 gap-[2px]">
+              <div className="grid grid-cols-7 gap-[3px]">
                 {item.map((q, index) => (
                   <Button
                     onClick={() =>
@@ -109,7 +109,7 @@ export default function Sidebar({ attempt }: { attempt: Attempt }) {
         <CarouselNext ref={nextButtonRef} className="hidden" />
       </Carousel>
 
-      <div className="hidden md:grid grid-cols-6 md:grid-cols-5 gap-[2px]">
+      <div className="hidden md:grid grid-cols-6 md:grid-cols-5 gap-[3px]">
         {attempt.package.questions.map((q, index) => (
           <Button
             onClick={() => changeQuestion(index)}

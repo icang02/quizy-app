@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import db from "@/lib/db";
 import { ucFirst } from "@/lib/constant";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const form: any = await req.json();
 
-  const data = await db.question.create({
+  const data = await prisma.question.create({
     data: {
       packageId: form.packageId,
       question: ucFirst(form.question),

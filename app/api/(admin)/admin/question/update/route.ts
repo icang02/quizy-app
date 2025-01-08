@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import db from "@/lib/db";
 import { ucFirst } from "@/lib/constant";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const question: any = await req.json();
 
-  await db.question.update({
+  await prisma.question.update({
     where: { id: question.id },
     data: {
       question: ucFirst(question.question),
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   });
 
   for (const answer of question.answers) {
-    await db.answer.upsert({
+    await prisma.answer.upsert({
       where: { id: answer.id },
       update: {
         answer: answer.answer,
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (question.deleteQuestion.length != 0)
-    await db.answer.deleteMany({
+    await prisma.answer.deleteMany({
       where: {
         id: {
           in: question.deleteQuestion,

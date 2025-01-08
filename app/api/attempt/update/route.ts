@@ -1,11 +1,11 @@
+import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import db from "@/lib/db";
 
 export async function POST(req: NextRequest) {
   const { attemptId, userAnswers } = await req.json();
 
   for (const item of userAnswers) {
-    await db.userAnswer.upsert({
+    await prisma.userAnswer.upsert({
       where: {
         attemptId_questionId: {
           attemptId: attemptId,
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const correctAnswers = await db.userAnswer.count({
+  const correctAnswers = await prisma.userAnswer.count({
     where: {
       attemptId: attemptId,
       answer: {
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
   });
   const totalScore = correctAnswers * 5;
 
-  await db.attempt.update({
+  await prisma.attempt.update({
     where: { id: attemptId },
     data: {
       score: totalScore,

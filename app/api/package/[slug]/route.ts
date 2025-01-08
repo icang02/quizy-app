@@ -1,12 +1,12 @@
+import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import db from "@/lib/db";
 
 type Params = Promise<{ slug: string }>;
 
 export async function GET(req: NextRequest, { params }: { params: Params }) {
   const { slug } = await params;
 
-  const data = await db.package.findFirst({
+  const data = await prisma.package.findFirst({
     where: {
       slug: slug,
     },

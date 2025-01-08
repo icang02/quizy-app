@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { formatInTimeZone } from "date-fns-tz";
-import db from "@/lib/db";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const { attemptId } = await req.json();
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     "yyyy-MM-dd HH:mm:ssXXX"
   );
 
-  const data = await db.attempt.update({
+  const data = await prisma.attempt.update({
     where: { id: parseInt(attemptId) },
     data: {
       startTime: startTime,
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   });
 
   // Delete data table UserAnswers
-  await db.userAnswer.deleteMany({
+  await prisma.userAnswer.deleteMany({
     where: { attemptId: parseInt(attemptId) },
   });
 

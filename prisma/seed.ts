@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import slugify from "slugify";
-const db = new PrismaClient();
+
+const prisma = new PrismaClient();
 
 async function main() {
-  await db.package.create({
+  await prisma.package.create({
     data: {
       name: "Pranata Komputer Ahli Pertama",
       slug: slugify("Pranata Komputer Ahli Pertama", { lower: true }),
@@ -147,9 +148,8 @@ async function main() {
       },
     },
   });
-  console.log("Seeding package 1 success...");
 
-  await db.package.create({
+  await prisma.package.create({
     data: {
       name: "Penyuluh Agama Ahli Pertama - Penyuluh Agama Islam",
       slug: slugify("Penyuluh Agama Ahli Pertama - Penyuluh Agama Islam", {
@@ -159,15 +159,24 @@ async function main() {
         "Soal terkait dakwah, penyuluhan, serta prinsip-prinsip dasar agama Islam yang relevan dengan kehidupan sehari-hari.",
     },
   });
-  console.log("Seeding package 2 success...");
+  console.log("\nSeeding packages success...");
+
+  await prisma.user.create({
+    data: {
+      name: "Administrator",
+      email: "admin@gmail.com",
+      password: "$2a$10$87SZQutjuTMnrL2D4MH.KOrcgq0yUF5AqH0MfNeWERdGJamXK6ZIO",
+    },
+  });
+  console.log("Seeding users success...");
 }
 
 main()
   .then(async () => {
-    await db.$disconnect();
+    await prisma.$disconnect();
   })
   .catch(async (e) => {
     console.log(e);
-    await db.$disconnect();
+    await prisma.$disconnect();
     process.exit(1);
   });

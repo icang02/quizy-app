@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { formatInTimeZone } from "date-fns-tz";
-import db from "@/lib/db";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const { packageId, name } = await req.json();
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     "yyyy-MM-dd HH:mm:ssXXX"
   );
 
-  const data = await db.attempt.create({
+  const data = await prisma.attempt.create({
     data: {
       name: name.toUpperCase(),
       packageId: packageId,

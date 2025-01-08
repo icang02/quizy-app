@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { toTitleCase, ucFirst } from "@/lib/constant";
-import db from "@/lib/db";
 import slugify from "slugify";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const { name, description } = await req.json();
 
-  const data = await db.package.create({
+  const data = await prisma.package.create({
     data: {
       name: toTitleCase(name),
       slug: slugify(name, { lower: true }),
